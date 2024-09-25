@@ -1,0 +1,14 @@
+package test;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.METHOD})//요소 타입
+@Retention(RetentionPolicy.RUNTIME)//보유 정책
+public @interface Myanno {
+	String value() default "나의 애노테이션";//데이터 타입 , 약간 메소드 느낌쓰 , 기본값 설정 , 삽입될 값
+	int number() default 10;
+	boolean required default true;
+}

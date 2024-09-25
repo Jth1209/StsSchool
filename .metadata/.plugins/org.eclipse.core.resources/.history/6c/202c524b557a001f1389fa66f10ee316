@@ -1,0 +1,29 @@
+package spring;
+
+import java.util.Collection;
+
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class ItemDao {
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	public ItemDao(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	public Item selectById(String item_id) {
+		List<Item> results = jdbcTemplate.query("select * from item where id = ?", null)
+		return null;
+	}
+	public void insert(Item item) {
+		
+	}
+	public void update(Item item) {
+		
+	}
+	public Collection<Item> selectAll(){
+		return null;
+	}
+}

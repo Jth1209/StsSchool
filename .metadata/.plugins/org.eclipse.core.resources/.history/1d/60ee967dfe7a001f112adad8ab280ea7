@@ -1,0 +1,55 @@
+package config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import spring.ChangePasswordService;
+import spring.MemberDao;
+import spring.MemberInfoPrinter;
+import spring.MemberListPrinter;
+import spring.MemberPrinter;
+import spring.MemberRegisterService;
+import spring.VersionPrinter;
+
+@Configuration
+public class AppCtx {
+	@Bean
+	public MemberDao memberDao() {
+		return new MemberDao();
+	}
+	
+	@Bean
+	public MemberPrinter memberPrinter() {
+		return new MemberPrinter();
+	}
+	
+	@Bean
+	public MemberListPrinter memberListPrinter() {
+		return new MemberListPrinter();
+	}
+	
+	@Bean
+	public MemberInfoPrinter memberInfoPrinter() {//setter메소드 없이도 값이 알아서 초기화 됨.
+		MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
+		return infoPrinter;
+	}
+
+	@Bean
+	public VersionPrinter versionPrinter() {
+		VersionPrinter vp = new VersionPrinter();
+		vp.setMajorVersion(5);
+		vp.setMinorVersion(7);
+		return vp;
+	}
+	
+	@Bean
+	public MemberRegisterService memberRegSvc() {
+		return new MemberRegisterService();
+	}
+
+	@Bean
+	public ChangePasswordService changePwdSvc() {
+		ChangePasswordService pwdSvc = new ChangePasswordService();//기본 생성자를 선언하는 것만으로 MemberDao 또한 초기화가 된다.
+		return pwdSvc;
+	}
+}

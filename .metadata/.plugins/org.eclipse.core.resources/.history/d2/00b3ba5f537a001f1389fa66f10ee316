@@ -1,0 +1,11 @@
+package db;
+
+import org.apache.tomcat.jdbc.pool.DataSource;
+
+public class ItemDb {
+	private DataSource dataSource;
+	
+	public ItemDb(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+}

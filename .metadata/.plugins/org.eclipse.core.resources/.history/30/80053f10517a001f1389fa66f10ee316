@@ -1,0 +1,19 @@
+package spring;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+
+public class Item {
+
+	private int item_id;
+	private String name;
+	private int price;
+	private int stock_quantity;
+	
+	
+}

@@ -1,0 +1,14 @@
+package spring;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class VersionPrinter {
+	@Autowired
+	private int majorVersion = 5;
+	@Autowired
+	private int minorVersion = 7;
+	
+	public void print() {
+		System.out.printf("이 프로그램의 버전은 %d.%d 입니다.\n\n",majorVersion,minorVersion);
+	}
+}

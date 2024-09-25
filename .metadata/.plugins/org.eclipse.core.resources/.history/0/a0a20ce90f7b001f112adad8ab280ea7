@@ -1,0 +1,17 @@
+package test;
+
+import java.lang.reflect.Method;
+
+public class MyMain {
+	
+	public static void main(String[] args) {
+		Method[] methodList = MyObject.class.getMethods();
+		
+		for(Method m : methodList) {
+			if(m.isAnnotationPresent(Myanno.class)) {
+				Myanno annotation = m.getDeclaredAnnotation(Myanno.class);
+				String value = annotation.value();
+			}
+		}
+	}
+}

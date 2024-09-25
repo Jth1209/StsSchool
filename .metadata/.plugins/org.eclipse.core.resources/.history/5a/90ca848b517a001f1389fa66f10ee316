@@ -1,0 +1,7 @@
+package spring;
+
+public class ItemDao {
+	public Item selectById(String item_id) {
+		
+	}
+}

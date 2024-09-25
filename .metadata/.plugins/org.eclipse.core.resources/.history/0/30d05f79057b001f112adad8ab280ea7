@@ -1,0 +1,30 @@
+package spring;
+
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class MemberPrinter {
+	
+	private DateTimeFormatter dateTimeFormatter;
+	
+	public void print(Member member) {
+		if(dateTimeFormatter == null) {
+			System.out.printf("회원정보 : 아이디 = %d, 이메일 = %s, 이름 = %s, 등록일 = %tF\n",
+					member.getId(),member.getEmail(),member.getName(),member.getRegisterDateTime());
+		}else {
+			System.out.printf("회원정보 : 아이디 = %d, 이메일 = %s, 이름 = %s, 등록일 = %tF\n",
+					member.getId(),member.getEmail(),member.getName(),dateTimeFormatter.format(member.getRegisterDateTime()));
+		}
+	}
+	
+	@Autowired(required = false)//매칭되는 빈이 없어도 오류를 발생시키지 않고 자동주입을 실행하지 않는다.(이거 좀 괜찮은 듯)
+	public void setDateFormatter(DateTimeFormatter dateTimeFormatter) {
+		this.dateTimeFormatter = dateTimeFormatter;
+	}
+	
+//	@Autowired//매칭되는 빈이 없어도 오류를 발생시키지 않고 자동주입을 실행하지 않는다.(이거 좀 괜찮은 듯)
+//	public void setDateFormatter(@Nullable DateTimeFormatter dateTimeFormatter) {
+//		this.dateTimeFormatter = dateTimeFormatter;
+//	}
+}

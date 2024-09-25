@@ -1,0 +1,46 @@
+package spring;
+
+import java.sql.ResultSet;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class ItemDao {
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	public ItemDao(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	public List<Item> selectById(String item_id) {
+		List<Item> results = jdbcTemplate.query("select * from item where id = ?",
+				(ResultSet rs , int rowNum) -> {
+					Item item = new Item(rs.getInt("item_id"),
+										 rs.getString("name"),
+							             rs.getInt("price"),
+							             rs.getInt("stock_quantity"));
+					return item;
+				},item_id);
+		return results;
+	}
+	public void insert(Item item) {
+		
+	}
+	public void update(Item item) {
+		
+	}
+	public List<Item> selectAll(){
+		List<Item> results = jdbcTemplate.query("select * from item where id = ?",
+				(ResultSet rs , int rowNum) -> {
+					Item item = new Item(rs.getInt("item_id"),
+										 rs.getString("name"),
+							             rs.getInt("price"),
+							             rs.getInt("stock_quantity"));
+					return item;
+				});
+		return null;
+	}
+}
