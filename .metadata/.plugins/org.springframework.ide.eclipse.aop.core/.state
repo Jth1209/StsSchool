@@ -3,6 +3,7 @@
 <aop-project name="chap02"/>
 <aop-project name="chap03"/>
 <aop-project name="chap04"/>
+<aop-project name="chap08"/>
 <aop-project name="prob"/>
 <aop-project name="_project"/>
 </aop-reference-model>

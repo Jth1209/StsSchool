@@ -24,7 +24,7 @@ public class MemberInfoPrinter {
 		this.memberDao = memberDao;
 	}
 	@Autowired
-	@Qualifier("printer")//container에서 지정한 한정자의 키워드를 setter 메소드에 부여해주면 단 한개만 인식한다.
+	@Qualifier("summaryPrinter")//container에서 지정한 한정자의 키워드를 setter 메소드에 부여해주면 단 한개만 인식한다.
 	public void setMemberPrinter(MemberPrinter printer) {
 		this.printer = printer;
 	}

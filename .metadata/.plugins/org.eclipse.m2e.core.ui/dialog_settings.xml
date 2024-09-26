@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="wizardPage">
 		<list key="groupId">
+			<item value="chap08"/>
 			<item value="_project"/>
 			<item value="chap04"/>
 			<item value="chap03"/>
@@ -10,6 +11,7 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="chap08"/>
 			<item value="_project"/>
 			<item value="chap04"/>
 			<item value="chap03"/>
