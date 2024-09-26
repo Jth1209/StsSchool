@@ -17,6 +17,10 @@ public class Member {
 	public Member(Long memberId) {
 		this.id = memberId;
 	}
+	public Member(String name , Address address) {
+		this.name = name;
+		this.address = address;
+	}
 	private Long id;
 	private String name;
 	private Address address;
