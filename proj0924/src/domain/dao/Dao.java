@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -18,6 +19,7 @@ import domain.entity.Order;
 import domain.entity.OrderItem;
 import domain.entity.OrderList;
 import domain.value.Address;
+import error.NoValueException;
 import error.OverValueException;
 
 public class Dao {
@@ -49,6 +51,10 @@ private JdbcTemplate jdbcTemplate;
 	public void insertOrderItem(Long order_id ,Long i_id , int count) {//매개변수로 사용자번호, 상품 번호, 주문 가격, 주문 수량을 저장
 		Item item = selectByItemId(i_id);
 	
+		if(item == null) {
+			throw new NoValueException();
+		}
+		
 		if(count > item.getStockQuantity()) {
 			throw new OverValueException();
 		}

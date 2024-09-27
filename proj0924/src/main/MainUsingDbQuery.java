@@ -20,6 +20,7 @@ import domain.entity.Order;
 import domain.entity.OrderItem;
 import domain.entity.OrderList;
 import domain.value.Address;
+import error.NoValueException;
 import error.OverValueException;
 
 public class MainUsingDbQuery {
@@ -189,6 +190,13 @@ public class MainUsingDbQuery {
 			e.error();
 			System.out.println();
 			System.out.println("주문하신 수량이 상품의 재고량보다 많습니다. 수량을 조정해주세요.");
+			System.out.println();
+			return;
+		}catch (NoValueException e) {
+			e.error();
+			System.out.println();
+			System.out.println("주문하고자 하는 상품이 존재하지 않습니다. 상품을 다시 확인해주세요.");
+			System.out.println();
 			return;
 		}
 		System.out.println("상품이 주문리스트에 저장되었습니다!");
