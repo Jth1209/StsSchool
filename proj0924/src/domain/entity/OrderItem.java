@@ -1,8 +1,10 @@
 package domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class OrderItem {
 	public OrderItem(Long orderItemId) {
 		this.id = orderItemId;

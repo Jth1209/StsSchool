@@ -20,4 +20,9 @@ public class Item {
 		this.price = price;
 		this.stockQuantity = stockQuantity;
 	}
+	
+	public Item(Long id) {
+		this.id = id;
+	}
+	
 }

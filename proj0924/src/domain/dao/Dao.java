@@ -14,6 +14,8 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import domain.entity.Item;
 import domain.entity.Member;
+import domain.entity.Order;
+import domain.entity.OrderItem;
 import domain.entity.OrderList;
 import domain.value.Address;
 import error.OverValueException;
@@ -44,27 +46,12 @@ private JdbcTemplate jdbcTemplate;
 		return results.isEmpty() ? null : results;
 	}
 	
-	public void insertOrder(Long m_id ,Long i_id , int count) {//매개변수로 사용자번호, 상품 번호, 주문 가격, 주문 수량을 저장
-		Member member = selectByMemberId(m_id);
+	public void insertOrderItem(Long order_id ,Long i_id , int count) {//매개변수로 사용자번호, 상품 번호, 주문 가격, 주문 수량을 저장
 		Item item = selectByItemId(i_id);
 	
 		if(count > item.getStockQuantity()) {
 			throw new OverValueException();
 		}
-		
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update((Connection con)->{//orders 테이블에 데이터를 삽입하는 기능
-			PreparedStatement pstmt = con.prepareStatement("insert into orders(member_id, city, street, zipcode, order_date)\r\n"
-					+ "values (? , ? , ? , ? , now())",new String[] {"id"});
-			pstmt.setLong(1, member.getId());
-			pstmt.setString(2, member.getAddress().getCity());
-			pstmt.setString(3, member.getAddress().getStreet());
-			pstmt.setString(4, member.getAddress().getZipcode());
-			return pstmt;
-		},keyHolder);
-		Number orderValue = keyHolder.getKey();
-		Long order_id = orderValue.longValue();
-		
 		
 		KeyHolder keyHolder2 = new GeneratedKeyHolder();
 		jdbcTemplate.update((Connection con)->{//order_item_id 테이블에 데이터 삽입 기능
@@ -76,12 +63,48 @@ private JdbcTemplate jdbcTemplate;
 			pstmt.setInt(4, count);
 			return pstmt;
 		},keyHolder2);
-		Number orderItemValue = keyHolder2.getKey();
-		Long order_item_id = orderItemValue.longValue();
+	}
+	
+	public void insertOrder(Long m_id) {
+		Member member = selectByMemberId(m_id);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update((Connection con)->{
+			PreparedStatement pstmt = con.prepareStatement("insert into orders (member_id,city,street,zipcode,order_date) values (?,?,?,?,now())",new String[] {"id"});
+			pstmt.setLong(1, m_id);
+			pstmt.setString(2, member.getAddress().getCity());
+			pstmt.setString(3, member.getAddress().getStreet());
+			pstmt.setString(4, member.getAddress().getZipcode());
+			return pstmt;
+		},keyHolder);
+	}
+	
+	public List<Order> checkOrder(Long m_id) {
+		List<Order> order = jdbcTemplate.query("select * from orders where member_id = ?",
+				(ResultSet rs , int rowNum)->{
+					Order orders = new Order(rs.getLong("id"),
+					new Member(rs.getLong("member_id")),
+					new ArrayList<>(),
+					rs.getDate("order_date"));
+					return orders;
+				},m_id);
+		return order.isEmpty() ? null : order;
+	}
+	
+	public List<OrderItem> checkOrderItem(Long o_id) {
+		List<OrderItem> order = jdbcTemplate.query("select * from order_item where order_id = ?",
+				(ResultSet rs , int rowNum)->{
+					OrderItem orders = new OrderItem(rs.getLong("id"),
+					new Item(rs.getLong("item_id")),
+					new Order(rs.getLong("order_id")),
+					rs.getInt("orderprice"),
+					rs.getInt("count"));
+					return orders;
+				},o_id);
+		return order.isEmpty() ? null : order;
 	}
 
-	public Member selectByMemberId(Long id) {
-		Member result = jdbcTemplate.queryForObject("select * from member where id = ?",
+	public Member selectByMemberId(Long id) {//사용자 정보를 사용자 일련 번호를 통해 가져오는 기능
+		List<Member> result = jdbcTemplate.query("select * from member where id = ?",
 				(ResultSet rs , int rowNum)->{
 					Member member = new Member(
 							rs.getLong("id"),
@@ -90,7 +113,7 @@ private JdbcTemplate jdbcTemplate;
 							new ArrayList<>());
 					return member;
 				},id);
-		return result;
+		return result.isEmpty() ? null : result.get(0);
 	}
 	
 	public void insertMember(Member member) {//멤버 추가 기능
@@ -117,11 +140,11 @@ private JdbcTemplate jdbcTemplate;
 							new ArrayList<>());
 					return member;
 				});
-		return results;
+		return results.isEmpty() ? null : results;
 	}
 	
 	public Item selectByItemId(Long id) {//아이템의 번호로 해당 아이템의 정보를 출력
-		Item result = jdbcTemplate.queryForObject("select * from item where id = ?",
+		List<Item> result = jdbcTemplate.query("select * from item where id = ?",
 				(ResultSet rs , int rowNum)->{
 					Item item = new Item(
 							rs.getLong("id"),
@@ -130,7 +153,7 @@ private JdbcTemplate jdbcTemplate;
 							rs.getInt("stockquantity"));
 					return item;
 				},id);
-		return result;
+		return result.isEmpty() ? null : result.get(0);
 	}
 	
 	public void insertItem(Item item) {//멤버 추가 기능
@@ -156,6 +179,15 @@ private JdbcTemplate jdbcTemplate;
 							rs.getInt("stockquantity"));
 					return item;
 				});
-		return results;
+		return results.isEmpty() ? null : results;
+	}
+	
+	public void deleteOrder(Long o_id) {
+		jdbcTemplate.update("delete from orders where id = ?",o_id);
+		jdbcTemplate.update("delete from order_item where order_id = ?",o_id);
+	}
+	
+	public void deleteOrderItem(Long oi_id) {
+		jdbcTemplate.update("delete from order_item where id = ?",oi_id);
 	}
 }

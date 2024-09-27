@@ -19,7 +19,12 @@ public class Order {
 	private List<OrderItem> orderItems = new ArrayList<>();
 	private Date orderDate;
 	
+	public Order(Long id) {
+		this.id = id;
+	}
+	
 	public void addOrderItem(OrderItem orderItem) {
 		orderItems.add(orderItem);
 	}
+	
 }
